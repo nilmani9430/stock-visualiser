@@ -10,7 +10,6 @@ exports.uploadCSV = async (req, res) => {
     return res.status(400).json({ error: 'Please upload a file' });
   }
 
-  // Check if the file is a CSV
   const fileMimeType = req.file.mimetype;
   const fileExtension = path.extname(req.file.originalname).toLowerCase();
 
@@ -19,7 +18,7 @@ exports.uploadCSV = async (req, res) => {
     fileMimeType !== 'application/vnd.ms-excel' ||
     fileExtension !== '.csv'
   ) {
-    // Delete the uploaded file if it's not a CSV
+
     fs.unlinkSync(req.file.path);
     return res.status(400).json({ error: 'Only CSV files are allowed' });
   }
@@ -35,10 +34,8 @@ exports.uploadCSV = async (req, res) => {
   let failedRecords = 0;
   const failedRows = [];
 
-  // Store all row processing promises
   const rowPromises = [];
 
-  // Initialize rowIndex to zero
   let rowIndex = 0;
 
   fs.createReadStream(filePath)
@@ -47,11 +44,9 @@ exports.uploadCSV = async (req, res) => {
       rowIndex++; 
       totalRecords++;
 
-      // Push each row processing as a promise
       rowPromises.push(
         new Promise(async (resolve) => {
           try {
-            // Create a new stock object with default values set to null
             const newStock = {
               date: null,
               symbol: null,
@@ -70,12 +65,10 @@ exports.uploadCSV = async (req, res) => {
               percent_deliverable: null,
             };
 
-            // Validate required columns and set values
             for (const column of requiredColumns) {
               if (!row[column]) {
                 newStock[column.toLowerCase().replace(/ /g, '_')] = null;
               } else {
-                // Special handling for date column
                 if (column === 'Date') {
                   const parsedDate = moment(row.Date, true);
                   if (!parsedDate.isValid()) {
@@ -83,7 +76,6 @@ exports.uploadCSV = async (req, res) => {
                   }
                   newStock.date = new Date(row.Date);
                 } else {
-                  // Convert numeric fields to proper data types
                   switch (column) {
                     case 'Prev Close':
                     case 'Open':
@@ -108,12 +100,10 @@ exports.uploadCSV = async (req, res) => {
               }
             }
 
-            // Save the new stock entry to the database
             await new Stock(newStock).save();
             successfulRecords++;
           } catch (error) {
             failedRecords++;
-            // Include the rowIndex and error message in the failedRows array
             failedRows.push({error: error.message, rowData: row });
           }
           resolve();
@@ -121,13 +111,10 @@ exports.uploadCSV = async (req, res) => {
       );
     })
     .on('end', async () => {
-      // Wait for all row promises to complete
       await Promise.all(rowPromises);
 
-      // Delete the uploaded file
       fs.unlinkSync(filePath);
 
-      // Send response with the results
       res.json({
         totalRecords,
         successfulRecords,
@@ -152,7 +139,7 @@ exports.getHighestVolume = async (req, res) => {
     const result = await Stock.find(query)
       .sort({ volume: -1 })
       .limit(1)
-      .select('date symbol volume'); // Select only the required fields
+      .select('date symbol volume'); 
 
     if (result.length === 0) {
       return res.status(404).json({ message: 'No records found' });
@@ -161,7 +148,7 @@ exports.getHighestVolume = async (req, res) => {
     const { date, symbol, volume } = result[0];
     res.json({
       highest_volume: {
-        date: date.toISOString().split('T')[0], // Convert date to YYYY-MM-DD format
+        date: date.toISOString().split('T')[0], 
         symbol,
         volume,
       }
