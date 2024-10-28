@@ -19,6 +19,7 @@ A RESTful API for managing and querying stock market data. This API allows you t
 - [Testing](#testing)
 - [Contributing](#contributing)
 - [License](#license)
+- [Documentation](#documentation)
 
 ## Features
 
@@ -50,10 +51,9 @@ Follow these steps to set up the project locally.
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/stock-api.git
+   git clone https://github.com/nilmani9430/stock-visualiser
    cd stock-visualiser
    ```
-
 
 2. Install the dependencies:
    ```bash
@@ -66,22 +66,17 @@ Create a `.env` file in the root directory and add the following variables:
 
 ```env
 PORT=
-MONGODB_URI=
+MONGODB_URL=
 ```
 
 ### Running the Application
 
-1. Start the MongoDB server:
-   ```bash
-   mongod
-   ```
-
-2. Run the server:
+1. Run the server:
    ```bash
    npm start
    ```
 
-   The server will start on `http://localhost:5000`.
+   The server will start on the desired port.
 
 ## API Endpoints
 
@@ -167,31 +162,11 @@ MONGODB_URI=
     }
     ```
 
-## Testing
 
-Unit tests are written using **Jest** and **Supertest**.
+## Documentation
 
-1. To run the tests, make sure MongoDB is running and then execute:
-   ```bash
-   npm test
-   ```
+- **API Documentation**: [API Word Document](https://docs.google.com/document/d/1HWO7GKZEYkroI40nXBRMN7LqpgyEExzD/edit?usp=sharing&ouid=102028042699684586291&rtpof=true&sd=true)
+- **Postman Documentation**: [Postman Documentation](https://documenter.getpostman.com/view/30464667/2sAY4uBNQV)
+- **Deployed API URL**: [Stock Data API](https://stock-visualiser.onrender.com)
 
-2. Tests are located in the `tests` folder and cover:
-   - CSV upload functionality.
-   - Data validation.
-   - Calculation of averages and highest volume retrieval.
-
-3. If tests exceed the timeout, increase it using:
-   ```javascript
-   jest.setTimeout(10000);
-   ```
-
-## Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature-branch`).
-3. Commit your changes (`git commit -m 'Add new feature'`).
-4. Push to the branch (`git push origin feature-branch`).
-5. Create a pull request.
+**Note**: Since I am using the free version of Render, please wait for some time as it may take a moment when hitting the API for the first time.
