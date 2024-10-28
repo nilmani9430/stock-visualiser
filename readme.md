@@ -51,7 +51,7 @@ Follow these steps to set up the project locally.
 1. Clone the repository:
    ```bash
    git clone https://github.com/your-username/stock-api.git
-   cd stock-api
+   cd stock-visualiser
    ```
 
 
@@ -65,8 +65,8 @@ Follow these steps to set up the project locally.
 Create a `.env` file in the root directory and add the following variables:
 
 ```env
-PORT=5000
-MONGODB_URI=mongodb://localhost:27017/stockdb
+PORT=
+MONGODB_URI=
 ```
 
 ### Running the Application
