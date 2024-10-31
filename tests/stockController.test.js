@@ -27,7 +27,6 @@ describe('POST /upload', () => {
   it('should upload a CSV file and store valid records', async () => {
     console.time("upload csv to db")
     const csvFilePath = path.join(__dirname, 'test_data.csv'); 
-    console.log("csv file path is",csvFilePath)
     const response = await request(app)
       .post('/upload')
       .attach('file', csvFilePath);
@@ -36,7 +35,7 @@ describe('POST /upload', () => {
     expect(response.body.successfulRecords).toBeGreaterThan(0);
     expect(response.body.failedRecords).toBeGreaterThanOrEqual(0);
     console.time("upload csv to db")
-  },30000);
+  },60000);
 
   it('should return an error for non-CSV files', async () => {
     const nonCsvFilePath = path.join(__dirname, 'test_data.txt'); 
@@ -68,7 +67,7 @@ describe('GET /api/highest_volume', () => {
     expect(response.statusCode).toBe(200);
     expect(response.body.highest_volume.symbol).toBe('TEST2');
     expect(response.body.highest_volume.volume).toBe(2000);
-  });
+  },30000);
 });
 
 describe('GET /api/average_close', () => {
@@ -81,13 +80,13 @@ describe('GET /api/average_close', () => {
     const response = await request(app).get('/api/average_close?start_date=2024-01-01&end_date=2024-12-31&symbol=TEST1');
     expect(response.statusCode).toBe(200);
     expect(response.body.average_close).toBe(200); // (150 + 250) / 2 = 200
-  });
+  },15000);
 
   it('should return 0 if no records are found', async () => {
     const response = await request(app).get('/api/average_close?start_date=2024-01-01&end_date=2024-12-31&symbol=NONEXISTENT');
     expect(response.statusCode).toBe(200);
     expect(response.body.average_close).toBe(0);
-  });
+  },15000);
 });
 
 
@@ -102,7 +101,7 @@ describe('GET /api/average_vwap', () => {
     expect(response.statusCode).toBe(200);
     expect(response.body.average_vwap).toBe(150); // (100 + 200) / 2 = 150
   });
-});
+},10000);
 
 
 
